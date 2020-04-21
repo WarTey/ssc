@@ -311,6 +311,11 @@ Resources:
         FromPort: 80
         IpProtocol: tcp
         ToPort: 80
+      SecurityGroupEgress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 80
+        IpProtocol: tcp
+        ToPort: 80
 
   ApplicationSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -325,6 +330,15 @@ Resources:
         FromPort: 22
         IpProtocol: tcp
         ToPort: 22
+      SecurityGroupEgress:
+      - SourceSecurityGroupName: !Ref LoadBalancerSecurityGroup
+        FromPort: 8080
+        IpProtocol: tcp
+        ToPort: 8080
+      - CidrIp: 0.0.0.0/0
+        FromPort: 22
+        IpProtocol: tcp
+        ToPort: 22
 
   DatabaseSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -336,6 +350,15 @@ Resources:
         IpProtocol: tcp
         ToPort: 3306
       - CidrIp: 0.0.0.0/0 #Attention!! Don't do this in real life!!
+        FromPort: 22
+        IpProtocol: tcp
+        ToPort: 22
+      SecurityGroupEgress:
+      - SourceSecurityGroupName: !Ref ApplicationSecurityGroup
+        FromPort: 3306
+        IpProtocol: tcp
+        ToPort: 3306
+      - CidrIp: 0.0.0.0/0
         FromPort: 22
         IpProtocol: tcp
         ToPort: 22
