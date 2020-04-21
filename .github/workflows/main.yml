@@ -51,4 +51,7 @@ jobs:
         aws configure set aws_session_token ${{ secrets.AWS_SESION_TOKEN }}
         aws cloudformation deploy --template-file CloudAwarenessLab/cloudformation.yaml --stack-name wartey-git-stack --no-fail-on-empty-changeset
         aws cloudformation deploy --template-file CloudAwarenessLab/ecs-task.yaml --stack-name wartey-ecs-task --parameter-overrides ImageName=docker.io/wartey/ssc:sha-$(git rev-parse --short HEAD) --no-fail-on-empty-changeset
-
+        sed -i "s#IMAGE_NAME#<wartey>#g" CloudAwarenessLab/kustomization.yaml
+        sed -i "s/IMAGE_TAG/sha-$(git rev-parse --short HEAD)/g" CloudAwarenessLab/kustomization.yaml
+        aws eks update-kubeconfig --name isen
+        kubectl kustomize . | kubectl apply -f -
