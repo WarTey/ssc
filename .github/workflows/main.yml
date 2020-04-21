@@ -22,6 +22,10 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - uses: minchao/cfn-nag-action@master
+      with:
+        args: '--input-path CloudAwarenessLab/cf-all.yaml'
+
     - name: Build and push Docker images
       uses: docker/build-push-action@v1.0.1
       with:
