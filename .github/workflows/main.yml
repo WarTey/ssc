@@ -33,6 +33,7 @@ jobs:
         registry: docker.io
         repository: ${{ secrets.DOCKER_USERNAME }}/ssc
         tag_with_sha: true
+        dockerfile: CloudAwarenessLab/Dockerfile
   
     - uses: minchao/cfn-nag-action@master
       with:
